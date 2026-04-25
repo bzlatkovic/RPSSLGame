@@ -1,6 +1,4 @@
-﻿using RPSSLGame.Api.Models;
-
-namespace RPSSLGame.Api.Domain;
+﻿namespace RPSSLGame.Api.Domain;
 
 public static class GameRules
 {

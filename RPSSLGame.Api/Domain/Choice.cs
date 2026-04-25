@@ -1,4 +1,4 @@
-﻿namespace RPSSLGame.Api.Models;
+﻿namespace RPSSLGame.Api.Domain;
 
 public enum Choice
 {
