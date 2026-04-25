@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{07745C38-D784-40B8-9325-A5708D73C723}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A64D1708-CB82-4C3B-8CAC-11914168F605}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{123B48AD-2E94-4F1A-B198-CD71B33EE4CA}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPSSLGame.Api", "RPSSLGame.Api\RPSSLGame.Api.csproj", "{D1376AD7-9B73-4A55-A4F3-66F652919E28}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D1376AD7-9B73-4A55-A4F3-66F652919E28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1376AD7-9B73-4A55-A4F3-66F652919E28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1376AD7-9B73-4A55-A4F3-66F652919E28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1376AD7-9B73-4A55-A4F3-66F652919E28}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
