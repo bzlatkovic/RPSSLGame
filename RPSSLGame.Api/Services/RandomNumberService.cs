@@ -8,6 +8,7 @@ public class RandomNumberService(
 {
     public async Task<int> GetRandomNumberAsync(CancellationToken cancellationToken = default)
     {
+        logger.LogDebug("Retrieving random number...");
         var response = await httpClient.GetFromJsonAsync<RandomNumberResponse>(string.Empty, cancellationToken);
 
         if (response is null or { RandomNumber: <= 0 })
