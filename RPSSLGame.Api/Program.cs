@@ -12,12 +12,14 @@ builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options => { options.SuppressModelStateInvalidFilter = true; });
 builder.Services.AddValidatorsFromAssembly(typeof(PlayRequestValidator).Assembly);
 builder.Services.AddCorsPolicy(builder.Configuration);
+builder.Services.AddRateLimiting(builder.Configuration);
 
 var app = builder.Build();
 
 app.UseGlobalExceptionHandler();
 app.UseHttpsRedirection();
 app.UseCorsPolicy();
+app.UseRateLimiter();
 app.MapOpenApi();
 app.MapControllers();
 

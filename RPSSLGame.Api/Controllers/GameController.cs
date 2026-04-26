@@ -10,6 +10,7 @@ namespace RPSSLGame.Api.Controllers;
 [ApiController]
 [Route("/")]
 [Produces("application/json")]
+[EnableRateLimiting(RateLimitingPolicies.FixedPolicy)]
 public class GameController(IGameService gameService, IValidator<PlayRequest> playRequestValidator) : ControllerBase
 {
     [HttpGet("choices")]

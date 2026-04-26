@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Http.Resilience;
+﻿using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.Http.Resilience;
 using Polly;
 using RPSSLGame.Api.Services;
 
@@ -31,7 +33,7 @@ public static class ServiceExtensions
             });
     }
 
-    public static IServiceCollection AddCorsPolicy(
+    public static void AddCorsPolicy(
         this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -47,7 +49,28 @@ public static class ServiceExtensions
                     .AllowAnyHeader();
             });
         });
+    }
 
-        return services;
+    public static void AddRateLimiting(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var policyName = configuration["RateLimiting:PolicyName"]!;
+        var permitLimit = configuration.GetValue<int>("RateLimiting:PermitLimit");
+        var windowSeconds = configuration.GetValue<int>("RateLimiting:WindowSeconds");
+        var queueLimit = configuration.GetValue<int>("RateLimiting:QueueLimit");
+
+        services.AddRateLimiter(options =>
+        {
+            options.AddFixedWindowLimiter(policyName, limiterOptions =>
+            {
+                limiterOptions.PermitLimit = permitLimit;
+                limiterOptions.Window = TimeSpan.FromSeconds(windowSeconds);
+                limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                limiterOptions.QueueLimit = queueLimit;
+            });
+
+            options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+        });
     }
 }
