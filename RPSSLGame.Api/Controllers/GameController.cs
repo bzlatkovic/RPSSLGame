@@ -6,7 +6,8 @@ namespace RPSSLGame.Api.Controllers;
 
 [ApiController]
 [Route("/")]
-public class GameController(IGameService gameService) : ControllerBase
+[Produces("application/json")]
+public class GameController(IGameService gameService, IValidator<PlayRequest> playRequestValidator) : ControllerBase
 {
     [HttpGet("choices")]
     [ProducesResponseType(typeof(IEnumerable<ChoiceDto>), StatusCodes.Status200OK)]
@@ -28,6 +29,10 @@ public class GameController(IGameService gameService) : ControllerBase
     [ProducesResponseType(typeof(PlayResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> PlayAsync([FromBody] PlayRequest request, CancellationToken cancellationToken = default)
     {
+        var validationResult = await playRequestValidator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.ToErrorResponse());
+
         var choice = await gameService.PlayAsync(request, cancellationToken);
         return Ok(choice);
     }

@@ -11,6 +11,10 @@ public static class ErrorMessages
         public static readonly (string Code, string Message) InvalidChoice = (
             "invalid_choice",
             "Player choice must be between 1 and 5");
+
+        public static readonly (string Code, string Message) ChoiceRequired = (
+            "choice_required",
+            "Player choice is required");
     }
 
     public static class General
