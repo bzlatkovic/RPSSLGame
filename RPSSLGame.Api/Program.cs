@@ -11,12 +11,14 @@ builder.Services.AddRandomNumberService(builder.Configuration);
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options => { options.SuppressModelStateInvalidFilter = true; });
 builder.Services.AddValidatorsFromAssembly(typeof(PlayRequestValidator).Assembly);
+builder.Services.AddCorsPolicy(builder.Configuration);
 
 var app = builder.Build();
 
-app.ConfigureExceptionHandler();
-app.MapOpenApi();
+app.UseGlobalExceptionHandler();
 app.UseHttpsRedirection();
+app.UseCorsPolicy();
+app.MapOpenApi();
 app.MapControllers();
 
 app.Run();

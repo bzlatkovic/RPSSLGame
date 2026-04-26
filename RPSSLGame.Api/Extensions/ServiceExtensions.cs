@@ -8,10 +8,7 @@ public static class ServiceExtensions
 {
     public static void AddRandomNumberService(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddHttpClient<IRandomNumberService, RandomNumberService>(client =>
-            {
-                client.BaseAddress = new Uri(configuration["RandomNumberService:Url"]!);
-            })
+        services.AddHttpClient<IRandomNumberService, RandomNumberService>(client => { client.BaseAddress = new Uri(configuration["RandomNumberService:Url"]!); })
             .AddResilienceHandler("random-number", pipeline =>
             {
                 pipeline.AddRetry(new HttpRetryStrategyOptions
@@ -32,5 +29,25 @@ public static class ServiceExtensions
 
                 pipeline.AddTimeout(TimeSpan.FromSeconds(5));
             });
+    }
+
+    public static IServiceCollection AddCorsPolicy(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var corsPolicy = configuration["Cors:PolicyName"]!;
+        var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>()!;
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy(corsPolicy, policy =>
+            {
+                policy.WithOrigins(allowedOrigins)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
+
+        return services;
     }
 }

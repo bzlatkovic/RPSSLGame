@@ -30,4 +30,10 @@ public static class WebApplicationExtensions
             });
         });
     }
+
+    public static void UseCorsPolicy(this WebApplication app)
+    {
+        var corsPolicy = app.Configuration["Cors:PolicyName"]!;
+        app.UseCors(corsPolicy);
+    }
 }
