@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using RPSSLGame.Api.Constants;
 using RPSSLGame.Api.Models;
+using Scalar.AspNetCore;
 
 namespace RPSSLGame.Api.Extensions;
 
@@ -35,5 +36,16 @@ public static class WebApplicationExtensions
     {
         var corsPolicy = app.Configuration["Cors:PolicyName"]!;
         app.UseCors(corsPolicy);
+    }
+
+    public static void UseScalarApiReference(this WebApplication app)
+    {
+        app.MapScalarApiReference("/api", options =>
+        {
+            options.Title = "RPSSL Game API";
+            options.Theme = ScalarTheme.DeepSpace;
+            options.DefaultHttpClient = new KeyValuePair<ScalarTarget, ScalarClient>(ScalarTarget.Shell, ScalarClient.Curl);
+            options.AddPreferredSecuritySchemes("http");
+        });
     }
 }

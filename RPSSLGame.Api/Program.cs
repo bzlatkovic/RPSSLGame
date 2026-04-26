@@ -17,10 +17,11 @@ builder.Services.AddRateLimiting(builder.Configuration);
 var app = builder.Build();
 
 app.UseGlobalExceptionHandler();
-app.UseHttpsRedirection();
 app.UseCorsPolicy();
 app.UseRateLimiter();
 app.MapOpenApi();
+app.UseScalarApiReference();
+
 app.MapControllers();
 
 app.Run();
