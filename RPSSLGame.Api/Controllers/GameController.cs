@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using RPSSLGame.Api.Constants;
+using RPSSLGame.Api.Extensions;
 using RPSSLGame.Api.Models;
 using RPSSLGame.Api.Services;
 
@@ -27,8 +30,12 @@ public class GameController(IGameService gameService, IValidator<PlayRequest> pl
 
     [HttpPost("play")]
     [ProducesResponseType(typeof(PlayResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> PlayAsync([FromBody] PlayRequest request, CancellationToken cancellationToken = default)
+    [Consumes("application/json")]
+    public async Task<IActionResult> PlayAsync([FromBody] PlayRequest? request, CancellationToken cancellationToken = default)
     {
+        if (request is null)
+            return BadRequest(new ErrorResponse(ErrorMessages.Game.ChoiceRequired.Message, ErrorMessages.Game.ChoiceRequired.Code));
+        
         var validationResult = await playRequestValidator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             return BadRequest(validationResult.ToErrorResponse());
