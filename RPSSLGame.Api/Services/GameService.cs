@@ -24,7 +24,7 @@ public class GameService(IRandomNumberService randomNumberService) : IGameServic
 
     public async Task<PlayResponse> PlayAsync(PlayRequest request, CancellationToken cancellationToken = default)
     {
-        var playerChoice = (Choice)request.Player;
+        var playerChoice = (Choice)request.Player!;
         var computerChoice = await GetRandomChoiceInternalAsync(cancellationToken);
         var result = GameRules.DetermineResult(playerChoice, computerChoice);
 
