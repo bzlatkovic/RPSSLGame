@@ -4,9 +4,9 @@ using RPSSLGame.Api.Models;
 
 namespace RPSSLGame.Api.Extensions;
 
-public static class ExceptionMiddlewareExtensions
+public static class WebApplicationExtensions
 {
-    public static void ConfigureExceptionHandler(this WebApplication app)
+    public static void UseGlobalExceptionHandler(this WebApplication app)
     {
         app.UseExceptionHandler(appBuilder =>
         {
