@@ -1,0 +1,33 @@
+﻿using Microsoft.AspNetCore.Diagnostics;
+using RPSSLGame.Api.Constants;
+using RPSSLGame.Api.Models;
+
+namespace RPSSLGame.Api.Extensions;
+
+public static class ExceptionMiddlewareExtensions
+{
+    public static void ConfigureExceptionHandler(this WebApplication app)
+    {
+        app.UseExceptionHandler(appBuilder =>
+        {
+            appBuilder.Run(async context =>
+            {
+                var logger = context.RequestServices.GetRequiredService<ILogger<WebApplication>>();
+                var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+                logger.LogError(exception, "Unhandled exception occurred");
+
+                var (statusCode, error) = exception switch
+                {
+                    HttpRequestException => (StatusCodes.Status503ServiceUnavailable, ErrorMessages.Game.ExternalServiceUnavailable),
+                    _ => (StatusCodes.Status500InternalServerError, ErrorMessages.General.UnexpectedError)
+                };
+
+                context.Response.StatusCode = statusCode;
+                context.Response.ContentType = "application/json";
+
+                await context.Response.WriteAsJsonAsync(new ErrorResponse(error.Message, error.Code));
+            });
+        });
+    }
+}

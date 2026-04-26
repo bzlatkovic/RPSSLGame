@@ -10,7 +10,9 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.ConfigureExceptionHandler();
 app.MapOpenApi();
 app.UseHttpsRedirection();
 app.MapControllers();
+
 app.Run();
