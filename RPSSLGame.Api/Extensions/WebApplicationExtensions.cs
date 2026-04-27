@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using RPSSLGame.Api.Constants;
 using RPSSLGame.Api.Models;
+using RPSSLGame.Api.Persistence;
 using Scalar.AspNetCore;
 
 namespace RPSSLGame.Api.Extensions;
@@ -47,5 +49,12 @@ public static class WebApplicationExtensions
             options.DefaultHttpClient = new KeyValuePair<ScalarTarget, ScalarClient>(ScalarTarget.Shell, ScalarClient.Curl);
             options.AddPreferredSecuritySchemes("http");
         });
+    }
+
+    public static async Task ApplyMigrationsAsync(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await db.Database.MigrateAsync();
     }
 }

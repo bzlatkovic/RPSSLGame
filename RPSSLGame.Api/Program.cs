@@ -19,6 +19,8 @@ builder.Services.AddDbContext(builder.Configuration);
 
 var app = builder.Build();
 
+await app.ApplyMigrationsAsync();
+
 app.UseGlobalExceptionHandler();
 app.UseCorsPolicy();
 app.UseRateLimiter();
