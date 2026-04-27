@@ -1,0 +1,32 @@
+﻿services:
+  api:
+    build:
+      context: .
+      dockerfile: RPSSLGame.Api/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=rpssl_game;Username=${DB_USERNAME};Password=${DB_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=rpssl_game
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5436:5432"
+    volumes:
+      - rpssl_game_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d rpssl_game" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  rpssl_game_data:
