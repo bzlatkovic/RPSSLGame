@@ -13,6 +13,7 @@ builder.Services.AddControllers()
 builder.Services.AddValidatorsFromAssembly(typeof(PlayRequestValidator).Assembly);
 builder.Services.AddCorsPolicy(builder.Configuration);
 builder.Services.AddRateLimiting(builder.Configuration);
+builder.Services.AddDbContext(builder.Configuration);
 
 var app = builder.Build();
 

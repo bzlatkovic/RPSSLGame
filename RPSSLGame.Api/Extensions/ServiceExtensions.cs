@@ -1,7 +1,9 @@
 ﻿using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Http.Resilience;
 using Polly;
+using RPSSLGame.Api.Persistence;
 using RPSSLGame.Api.Services;
 
 namespace RPSSLGame.Api.Extensions;
@@ -51,9 +53,7 @@ public static class ServiceExtensions
         });
     }
 
-    public static void AddRateLimiting(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static void AddRateLimiting(this IServiceCollection services, IConfiguration configuration)
     {
         var policyName = configuration["RateLimiting:PolicyName"]!;
         var permitLimit = configuration.GetValue<int>("RateLimiting:PermitLimit");
@@ -72,5 +72,11 @@ public static class ServiceExtensions
 
             options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
         });
+    }
+
+    public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
     }
 }
