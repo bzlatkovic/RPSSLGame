@@ -1,5 +1,6 @@
 using FluentValidation;
 using RPSSLGame.Api.Extensions;
+using RPSSLGame.Api.Persistence.Repositories;
 using RPSSLGame.Api.Services;
 using RPSSLGame.Api.Validators;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IGameRoundRepository, GameRoundRepository>();
 builder.Services.AddRandomNumberService(builder.Configuration);
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options => { options.SuppressModelStateInvalidFilter = true; });
