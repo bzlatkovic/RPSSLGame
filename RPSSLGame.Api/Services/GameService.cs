@@ -39,6 +39,33 @@ public class GameService(IRandomNumberService randomNumberService, IGameRoundRep
             (int)computerChoice);
     }
 
+    public async Task<StatsDataResponse> GetStatsAsync(CancellationToken cancellationToken)
+    {
+        var choiceStats = await gameRoundRepository.GetStatsAsync(cancellationToken);
+        if (choiceStats is null || !choiceStats.Any()) return new StatsDataResponse();
+
+        var mostPlayedChoice = choiceStats?.MaxBy(x => x.TimesPlayed)?.Choice;
+        var mostWinningChoice = choiceStats?.MaxBy(x => x.Wins)?.Choice;
+
+        return new StatsDataResponse
+        {
+            TotalRounds = choiceStats.Sum(x => x.TimesPlayed),
+            TotalWins = choiceStats.Sum(x => x.Wins),
+            TotalLosses = choiceStats.Sum(x => x.Losses),
+            TotalTies = choiceStats.Sum(x => x.Ties),
+            MostPlayedChoice = mostPlayedChoice.HasValue ? new ChoiceDto(mostPlayedChoice.Value) : null,
+            MostWinningChoice = mostWinningChoice.HasValue ? new ChoiceDto(mostWinningChoice.Value) : null,
+            ChoiceStats = choiceStats?.Select(c => new ChoiceStatsResponse
+            {
+                Choice = new ChoiceDto(c.Choice),
+                TimesPlayed = c.TimesPlayed,
+                Wins = c.Wins,
+                Losses = c.Losses,
+                Ties = c.Ties
+            })
+        };
+    }
+
     private async Task<Choice> GetRandomChoiceInternalAsync(CancellationToken cancellationToken = default)
     {
         var randomNumber = await randomNumberService.GetRandomNumberAsync(cancellationToken);
