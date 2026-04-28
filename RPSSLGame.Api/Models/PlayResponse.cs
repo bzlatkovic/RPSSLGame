@@ -1,3 +1,3 @@
 ﻿namespace RPSSLGame.Api.Models;
 
-public record PlayResponse(string Result, int Player, int Computer);
+public record PlayResponse(string Results, int Player, int Computer);

@@ -23,7 +23,7 @@ public class GameApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         .WithPassword("postgres")
         .Build();
 
-    private WireMockServer _wireMockServer;
+    private WireMockServer? _wireMockServer;
 
     public async Task InitializeAsync()
     {

@@ -67,7 +67,7 @@ public class GameControllerTests(GameApiFactory factory) : IClassFixture<GameApi
         result.Should().NotBeNull();
         result.Player.Should().Be((int)Choice.Scissors);
         result.Computer.Should().Be((int)Choice.Paper);
-        result.Result.Should().Be(nameof(GameResult.Win).ToLower());
+        result.Results.Should().Be(nameof(GameResult.Win).ToLower());
 
         var gameRounds = await factory.GetAllGameRoundsAsync();
         gameRounds.Should().NotBeNullOrEmpty();

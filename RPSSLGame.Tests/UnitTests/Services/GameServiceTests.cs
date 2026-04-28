@@ -60,7 +60,7 @@ public class GameServiceTests
 
         var response = await _gameService.PlayAsync(request);
 
-        response.Result.Should().Be(nameof(GameResult.Win).ToLower());
+        response.Results.Should().Be(nameof(GameResult.Win).ToLower());
         response.Player.Should().Be((int)Choice.Rock);
         response.Computer.Should().Be((int)Choice.Scissors);
 
@@ -80,7 +80,7 @@ public class GameServiceTests
 
         var response = await _gameService.PlayAsync(request);
 
-        response.Result.Should().Be(nameof(GameResult.Tie).ToLower());
+        response.Results.Should().Be(nameof(GameResult.Tie).ToLower());
         await _gameRoundRepository.Received(1).AddAsync(
             Arg.Is<GameRound>(gr =>
                 gr.PlayerChoice == Choice.Paper &&
