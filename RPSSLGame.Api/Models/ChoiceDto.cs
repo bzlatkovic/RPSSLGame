@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
 using RPSSLGame.Api.Domain;
 
 namespace RPSSLGame.Api.Models;
@@ -18,6 +19,7 @@ public class ChoiceDto
         Name = name;
     }
 
-    public int Id { get; }
+    [DefaultValue(1)] public int Id { get; }
+
     public string Name { get; }
 }

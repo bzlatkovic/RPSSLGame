@@ -1,3 +1,5 @@
-﻿namespace RPSSLGame.Api.Models;
+﻿using System.ComponentModel;
 
-public record PlayResponse(string Results, int Player, int Computer);
+namespace RPSSLGame.Api.Models;
+
+public record PlayResponse(string Results, [property: DefaultValue(1)] int Player, [property: DefaultValue(1)] int Computer);
