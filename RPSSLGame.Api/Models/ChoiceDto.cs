@@ -21,5 +21,5 @@ public class ChoiceDto
 
     [DefaultValue(1)] public int Id { get; }
 
-    public string Name { get; }
+    [DefaultValue("rock")] public string Name { get; }
 }
