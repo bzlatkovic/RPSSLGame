@@ -1,3 +1,6 @@
-﻿namespace RPSSLGame.Api.Models;
+﻿using System.ComponentModel;
 
-public record PlayRequest(int? Player);
+namespace RPSSLGame.Api.Models;
+
+public record PlayRequest(
+    [property: DefaultValue(1)] int? Player);
