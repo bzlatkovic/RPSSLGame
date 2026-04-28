@@ -51,4 +51,13 @@ public class GameController(IGameService gameService, IValidator<PlayRequest> pl
         var choice = await gameService.PlayAsync(request, cancellationToken);
         return Ok(choice);
     }
+
+    [HttpGet("stats")]
+    [ProducesResponseType(typeof(StatsDataResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetStats(CancellationToken cancellationToken = default)
+    {
+        var stats = await gameService.GetStatsAsync(cancellationToken);
+        return Ok(stats);
+    }
 }
