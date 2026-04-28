@@ -5,7 +5,10 @@ using RPSSLGame.Api.Persistence.Repositories;
 
 namespace RPSSLGame.Api.Services;
 
-public class GameService(IRandomNumberService randomNumberService, IGameRoundRepository gameRoundRepository) : IGameService
+public class GameService(
+    IRandomNumberService randomNumberService,
+    IGameRoundRepository gameRoundRepository,
+    ILogger<GameService> logger) : IGameService
 {
     private static readonly IReadOnlyList<ChoiceDto> _choices = Enum
         .GetValues<Choice>()
@@ -33,6 +36,8 @@ public class GameService(IRandomNumberService randomNumberService, IGameRoundRep
         var gameRound = GameRound.Create(playerChoice, computerChoice, result);
         await gameRoundRepository.AddAsync(gameRound, cancellationToken);
 
+        logger.LogInformation("Game played - Player: {PlayerChoice}, Computer: {ComputerChoice}, Result: {Result}", playerChoice, computerChoice, result);
+
         return new PlayResponse(
             result.ToString().ToLower(),
             (int)playerChoice,
@@ -42,7 +47,11 @@ public class GameService(IRandomNumberService randomNumberService, IGameRoundRep
     public async Task<StatsDataResponse> GetStatsAsync(CancellationToken cancellationToken)
     {
         var choiceStats = await gameRoundRepository.GetStatsAsync(cancellationToken);
-        if (choiceStats is null || !choiceStats.Any()) return new StatsDataResponse();
+        if (choiceStats is null || !choiceStats.Any())
+        {
+            logger.LogInformation("Stats requested but no rounds have been played yet");
+            return new StatsDataResponse();
+        }
 
         var mostPlayedChoice = choiceStats?.MaxBy(x => x.TimesPlayed)?.Choice;
         var mostWinningChoice = choiceStats?.MaxBy(x => x.Wins)?.Choice;
