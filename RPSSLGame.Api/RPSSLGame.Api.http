@@ -1,2 +1,28 @@
-@HostAddress = http://localhost:5175
+@HostAddress = http://localhost:8080
+@ContentType = application/json
 
+# @name GetAllChoices
+GET {{HostAddress}}/choices
+Accept: {{ContentType}}
+
+###
+
+# @name GetRadnomChoice
+GET {{HostAddress}}/choice
+Accept: {{ContentType}}
+
+###
+
+# @name GetStatistics
+GET {{HostAddress}}/stats
+Accept: {{ContentType}}
+
+###
+
+# @name PlayGame
+POST {{HostAddress}}/play
+Content-Type: {{ContentType}}
+
+{
+  "player": 3
+}
