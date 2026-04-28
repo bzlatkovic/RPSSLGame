@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Http.Resilience;
+using Microsoft.OpenApi;
 using Polly;
 using RPSSLGame.Api.Persistence;
 using RPSSLGame.Api.Services;
@@ -78,5 +79,31 @@ public static class ServiceExtensions
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+    }
+
+    public static void AddCustomOpenApi(this IServiceCollection services)
+    {
+        services.AddOpenApi(options =>
+        {
+            options.AddDocumentTransformer((document, _, _) =>
+            {
+                document.Info.Description = "API for RPSSL(rock, paper, scissors, spock, lizard) game.";
+
+                if (document.Tags == null) return Task.CompletedTask;
+                var gameTag = document.Tags.FirstOrDefault(t => t.Name == "Game");
+
+                const string gameTagDescription = "Handles all Rock, Paper, Scissors, Lizard, Spock game operations.\n Provides endpoints for retrieving available choices, playing rounds against the computer, and viewing game statistics.";
+                if (gameTag is not null)
+                    gameTag.Description = gameTagDescription;
+                else
+                    document.Tags.Add(new OpenApiTag
+                    {
+                        Name = "Game",
+                        Description = gameTagDescription
+                    });
+
+                return Task.CompletedTask;
+            });
+        });
     }
 }

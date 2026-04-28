@@ -48,6 +48,8 @@ public static class WebApplicationExtensions
             options.Theme = ScalarTheme.DeepSpace;
             options.DefaultHttpClient = new KeyValuePair<ScalarTarget, ScalarClient>(ScalarTarget.Shell, ScalarClient.Curl);
             options.AddPreferredSecuritySchemes("http");
+            options.HideModels();
+            options.ShowDeveloperTools = DeveloperToolsVisibility.Never;
         });
     }
 
