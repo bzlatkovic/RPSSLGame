@@ -90,7 +90,7 @@ Full documentation is available at `http://localhost:8080/api`.
 Docker must be running — integration tests use Testcontainers to spin up a real PostgreSQL instance.
 
 ```bash
-dotnet test
+dotnet test RPSSLGame.Tests
 ```
 
 ### What is tested
