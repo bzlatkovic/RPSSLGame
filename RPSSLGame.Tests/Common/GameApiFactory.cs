@@ -89,14 +89,14 @@ public class GameApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         );
     }
 
-    public async Task<IReadOnlyList<GameRound>> GetAllGameRounds()
+    public async Task<IReadOnlyList<GameRound>> GetAllGameRoundsAsync()
     {
         using var scope = Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         return await dbContext.GameRounds.ToListAsync();
     }
 
-    public async Task AddGameRound(GameRound gameRound)
+    public async Task AddGameRoundAsync(GameRound gameRound)
     {
         using var scope = Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -104,7 +104,7 @@ public class GameApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task AddGameRounds(IEnumerable<GameRound> gameRounds)
+    public async Task AddGameRoundsAsync(IEnumerable<GameRound> gameRounds)
     {
         using var scope = Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
