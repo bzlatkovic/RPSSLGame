@@ -1,4 +1,5 @@
-﻿using RPSSLGame.Api.Domain;
+﻿using System.Text.Json.Serialization;
+using RPSSLGame.Api.Domain;
 
 namespace RPSSLGame.Api.Models;
 
@@ -8,6 +9,13 @@ public class ChoiceDto
     {
         Id = (int)choice;
         Name = choice.ToString().ToLower();
+    }
+
+    [JsonConstructor]
+    public ChoiceDto(int id, string name)
+    {
+        Id = id;
+        Name = name;
     }
 
     public int Id { get; }
